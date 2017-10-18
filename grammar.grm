@@ -1,0 +1,51 @@
+! Welcome to GOLD Parser Builder 5.2
+"Name"    = 'T03 Compiladores'
+"Version" = '1.alpha 110'
+"Author"  = 'Lucas Morais'
+"About"   = 'Based on compiler PBL specification'
+
+{IdAlphaNumeric} = {Alphanumeric} + [_$]
+{Symbol} = {Printable} - [&22] - [&A0] !%20 .. &7E &A0
+!{SpaceSymbol} = [&09] | [&0A] | [&0D] | [&20]        
+!{Chars} = {Alphanumeric} + {Symbol} + [&7C&22]                  
+!{String char} = '"'{Chars}*'"'
+
+Identifier = {Letter}{IdAlphaNumeric}*
+Boolean = 'true' | 'false'      
+Number = '-'?{Space}?{Number}+[.{Number}+]*       
+!StringLiteral = '"'{String char}*'"'
+ReservedWord = 'class' | 'final' | 'if' | 'else' | 'for' | 'scan' 
+             | 'main' | 'print' | 'bool' | 'true' | 'false'
+
+
+Comment Start = '/*'
+Comment End = '*/'
+Comment Line = '//'
+             
+!"Case Sensitive" = "True" ! or False
+"Start Symbol"   = <Statement>
+<Statement> ::=
+                   
+<ClassType> ::= <Name>
+             
+<Statement> ::= <ClassType>
+
+<Heritage> ::= '<==>' <ClassType> '{' <Statement> '}'
+             
+<Name> ::= <SimpleName>
+        
+<SimpleName> ::= Identifier
+              
+                 
+<MethodStructure> ::= <type> <Name> '(' <ArgumentList> ')' '{' <Statement> '}'
+                   | <type> <Name> '(' ')' '{' <Statement> '}'
+                   ! <Name> '(' ')' '{' <Statement> '}'
+                    
+<ObjectInstance> ::= '<-->' <ClassType> '(' <ArgumentList> ')'
+
+<AttributeInvocated> ::= <Name> '::' Identifier                
+
+<type> ::= 'int' | 'float' | 'bool'
+                
+<ArgumentList> ::= <type> <Name>
+                | <ArgumentList> ','
